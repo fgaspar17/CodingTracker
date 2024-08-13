@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using CodingTrackerLibrary;
 
 var builder = new ConfigurationBuilder()
                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
@@ -8,4 +9,6 @@ var configuration = builder.Build();
 // Access settings
 string connectionString = configuration["AppSettings:ConnectionString"];
 
-Console.WriteLine($"Setting1: {connectionString}");
+SetupDatabase setupDatabase = new SetupDatabase(connectionString!);
+setupDatabase.InitializeDatabase();
+setupDatabase.SeedData();

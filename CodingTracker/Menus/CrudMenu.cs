@@ -12,8 +12,10 @@ public enum CrudMenuOptions
     Update,
     [Title("Delete a coding session")]
     Delete,
-    [Title("Show all coding sessions")]
+    [Title("Show coding sessions")]
     Show,
+    [Title("Start Stopwatch")]
+    Stopwatch,
     [Title("Reports")]
     Reports, 
 }

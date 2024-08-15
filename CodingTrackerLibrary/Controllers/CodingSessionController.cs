@@ -28,6 +28,28 @@ public static class CodingSessionController
         return sessions;
     }
 
+    public static List<CodingSession> GetCodingSessionsPerDay(string connStr)
+    {
+        List<CodingSession> sessions = new List<CodingSession>();
+        try
+        {
+            using (IDbConnection connection = new SqliteConnection(connStr))
+            {
+                connection.Open();
+
+                sessions = connection.Query<CodingSession>("SELECT Id, StartTime, EndTime FROM CodingSessions").ToList();
+
+                connection.Close();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error ocurred: {ex.Message}");
+        }
+
+        return sessions;
+    }
+
     public static CodingSession GetCodingSessionById(int id, string connStr)
     {
         CodingSession session = null;

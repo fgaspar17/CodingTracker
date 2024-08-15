@@ -10,7 +10,9 @@ public static class DisplayMenu
         while (true)
         {
             Console.WriteLine();
+            
             return AnsiConsole.Prompt<T>(menu.GetMenu());
+            
 
             //string? input = Console.ReadLine();
 

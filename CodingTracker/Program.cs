@@ -1,14 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using CodingTrackerLibrary;
+using CodingTracker;
 
-var builder = new ConfigurationBuilder()
-               .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-
-var configuration = builder.Build();
-
-// Access settings
-string connectionString = configuration["AppSettings:ConnectionString"];
-
-SetupDatabase setupDatabase = new SetupDatabase(connectionString!);
+SetupDatabase setupDatabase = new SetupDatabase(Settings.GetConnectionString());
 setupDatabase.InitializeDatabase();
-setupDatabase.SeedData();
+//setupDatabase.SeedData();
+
+UserInterface userInterface = new UserInterface();
+userInterface.DisplayMainMenu(Settings.GetConnectionString());

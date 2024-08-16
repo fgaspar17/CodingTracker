@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CodingTracker;
 
-public class UserInterface
+public class Application
 {
-    public void DisplayMainMenu(string connectionString)
+    public void Run(string connectionString)
     {
         bool continueRunning = true;
         CrudMenu crudMenu = new CrudMenu();

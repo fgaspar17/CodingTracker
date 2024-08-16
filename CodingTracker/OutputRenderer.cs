@@ -3,49 +3,14 @@ using CodingTrackerLibrary.Controllers;
 using Spectre.Console;
 using System.Globalization;
 using System.Reflection;
+using System.Text;
 
 namespace CodingTracker;
 
-public static class TableRenderer
+public static class OutputRenderer
 {
     private static readonly Dictionary<Type, PropertyInfo[]> PropertiesCache = new Dictionary<Type, PropertyInfo[]>();
-    public static void ShowCodingSessions(string connectionString, RecordsMenuOptions option = RecordsMenuOptions.All, OrderOptions order = OrderOptions.Asc) 
-    {
-        List<CodingSession> sessions = CodingSessionController.GetCodingSessions(connectionString);
-
-        sessions = FilterSessions(sessions, option);
-        sessions = SortSessions(sessions, order);
-
-        ShowTable<CodingSession>(sessions, title: "Coding Sessions");
-    }
-
-    private static List<CodingSession> FilterSessions(List<CodingSession> sessions, RecordsMenuOptions option)
-    {
-        DateTime today = DateTime.Today;
-        switch (option)
-        {
-            case RecordsMenuOptions.Day:
-                return sessions.Where(s => s.StartTime.Date == today).ToList();
-            case RecordsMenuOptions.Week:
-                int currentWeek = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
-                    today, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
-                return sessions.Where(s =>
-                    CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
-                        s.StartTime, CalendarWeekRule.FirstDay, DayOfWeek.Monday) == currentWeek
-                ).ToList();
-            case RecordsMenuOptions.Year:
-                return sessions.Where(s => s.StartTime.Year == today.Year).ToList();
-            default:
-                return sessions;
-        }
-    }
-
-    private static List<CodingSession> SortSessions(List<CodingSession> sessions, OrderOptions order)
-    {
-        return order == OrderOptions.Asc ?
-            sessions.OrderBy(s => s.StartTime).ToList() :
-            sessions.OrderByDescending(s => s.StartTime).ToList();
-    }
+   
 
     /// <summary>
     /// Displays a list of objects in a table format.
@@ -53,7 +18,7 @@ public static class TableRenderer
     /// <param name="values">List of objects to display.</param>
     /// <typeparam name="T">Type of object, must be a class.</typeparam>
 
-    private static void ShowTable<T>(List<T> values, string title) where T : class
+    public static void ShowTable<T>(List<T> values, string title) where T : class
     {
         // Create a table
         var table = new Table();
@@ -69,7 +34,6 @@ public static class TableRenderer
         // Add columns
         foreach (PropertyInfo property in properties)
         {
-            //table.AddColumn(new TableColumn(property.Name).Centered());
             table.AddColumn(new TableColumn(new Markup("[bold yellow]" + property.Name + "[/]")).Centered().PadRight(2));
         }
         
@@ -85,6 +49,23 @@ public static class TableRenderer
         }
 
         AnsiConsole.Write(table);
+    }
+
+    public static void ShowPanel<T>(T value, string title) where T : class
+    {
+        PropertyInfo[] properties = GetCachedProperties<T>();
+        var sb = new StringBuilder();
+
+        foreach (PropertyInfo property in properties)
+        {
+            sb.AppendLine($"{property.Name}: [bold]{property.GetValue(value)}[/]");
+        }
+
+        var panel = new Panel(new Markup(sb.ToString()))
+            .Header(title)
+            .Border(BoxBorder.Rounded);
+
+        AnsiConsole.Render(panel);
     }
 
     // Cache to avoid performance issues due to reflection

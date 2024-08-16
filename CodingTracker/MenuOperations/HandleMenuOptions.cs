@@ -29,7 +29,7 @@ public static class HandleMenuOptions
                 HandleStopwatch(connectionString);
                 break;
             case CrudMenuOptions.Reports:
-                // TODO: Implements reports
+                HandleReports(connectionString);
                 break;
             default:
                 break;
@@ -61,7 +61,7 @@ public static class HandleMenuOptions
             Console.Clear();
             var rule = new Rule("[yellow]Updating[/]");
             AnsiConsole.Write(rule);
-            TableRenderer.ShowCodingSessions(connectionString);
+            CodingSessionOrganizer.ShowCodingSessions(connectionString);
             int userId = DisplayMenu.ShowMenu<int>(new IdMenu());
             DateTime userStartTime = Convert.ToDateTime(DisplayMenu.ShowMenu<string>(new StartTimeMenu()));
             DateTime userEndTime = Convert.ToDateTime(DisplayMenu.ShowMenu<string>(new EndTimeMenu(userStartTime)));
@@ -81,7 +81,7 @@ public static class HandleMenuOptions
             Console.Clear();
             var rule = new Rule("[red]Deleting[/]");
             AnsiConsole.Write(rule);
-            TableRenderer.ShowCodingSessions(connectionString);
+            CodingSessionOrganizer.ShowCodingSessions(connectionString);
             int userId = DisplayMenu.ShowMenu<int>(new IdMenu());
             CodingSessionController.DeleteCodingSession(new CodingSession { Id = userId }, connectionString);
             Console.WriteLine("\nRecord deleted successfully");
@@ -134,25 +134,52 @@ public static class HandleMenuOptions
         ShowRecordsMenu menu = new ShowRecordsMenu();
         RecordsMenuOptions option = DisplayMenu.ShowMenu<RecordsMenuOptions>(menu);
 
-        OrderMenu orderMenu = new OrderMenu();
-        OrderOptions optionOrder = DisplayMenu.ShowMenu<OrderOptions>(orderMenu);
+        if(option != RecordsMenuOptions.Quit)
+        {
+            OrderMenu orderMenu = new OrderMenu();
+            OrderOptions optionOrder = DisplayMenu.ShowMenu<OrderOptions>(orderMenu);
+            if(optionOrder != OrderOptions.Quit)
+            {
+                switch (option)
+                {
+                    case RecordsMenuOptions.Quit:
+                        break;
+                    case RecordsMenuOptions.All:
+                        CodingSessionOrganizer.ShowCodingSessions(connectionString, order: optionOrder);
+                        break;
+                    case RecordsMenuOptions.Day:
+                    case RecordsMenuOptions.Week:
+                    case RecordsMenuOptions.Year:
+                        CodingSessionOrganizer.ShowCodingSessions(connectionString, option, optionOrder);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    private static void HandleReports(string connectionString)
+    {
+        ShowRecordsMenu menu = new ShowRecordsMenu();
+        RecordsMenuOptions option = DisplayMenu.ShowMenu<RecordsMenuOptions>(menu);
 
         switch (option)
         {
             case RecordsMenuOptions.Quit:
                 break;
             case RecordsMenuOptions.All:
-                TableRenderer.ShowCodingSessions(connectionString, order: optionOrder);
                 break;
             case RecordsMenuOptions.Day:
+                break;
             case RecordsMenuOptions.Week:
+                Report report = ReportController.GetReportLastWeek(connectionString);
+                OutputRenderer.ShowPanel<Report>(report, title: "Week Report");
+                break;
             case RecordsMenuOptions.Year:
-                TableRenderer.ShowCodingSessions(connectionString, option, optionOrder);
                 break;
             default:
                 break;
         }
-
-
     }
 }

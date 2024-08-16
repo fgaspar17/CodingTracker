@@ -6,5 +6,5 @@ SetupDatabase setupDatabase = new SetupDatabase(Settings.GetConnectionString());
 setupDatabase.InitializeDatabase();
 //setupDatabase.SeedData();
 
-UserInterface userInterface = new UserInterface();
-userInterface.DisplayMainMenu(Settings.GetConnectionString());
+Application app = new Application();
+app.Run(Settings.GetConnectionString());

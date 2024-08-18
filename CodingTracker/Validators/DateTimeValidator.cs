@@ -1,6 +1,4 @@
-﻿using CodingTrackerLibrary.Controllers;
-using Microsoft.VisualBasic;
-using Spectre.Console;
+﻿using Spectre.Console;
 using System.Globalization;
 
 namespace CodingTracker;

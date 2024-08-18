@@ -17,7 +17,9 @@ public enum CrudMenuOptions
     [Title("Start Stopwatch")]
     Stopwatch,
     [Title("Reports")]
-    Reports, 
+    Reports,
+    [Title("Manage Goals")]
+    Goals, 
 }
 
 public class CrudMenu : IMenu<CrudMenuOptions>

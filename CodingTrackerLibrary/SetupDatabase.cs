@@ -26,6 +26,15 @@ public class SetupDatabase
 	                            ""StartTime""	TEXT NOT NULL,
 	                            ""EndTime""	TEXT NOT NULL,
 	                            PRIMARY KEY(""Id"" AUTOINCREMENT)
+                                );
+
+                                CREATE TABLE IF NOT EXISTS ""CodingGoals"" (
+	                            ""Id""	INTEGER NOT NULL,
+                                ""Name"" TEXT NOT NULL,
+	                            ""StartTime""	TEXT NOT NULL,
+	                            ""EndTime""	TEXT NOT NULL,
+                                ""Hours"" INTEGER NOT NULL,
+	                            PRIMARY KEY(""Id"" AUTOINCREMENT)
                                 );");
 
                 connection.Close();

@@ -1,5 +1,4 @@
-﻿using CodingTrackerLibrary.Controllers;
-using CodingTrackerLibrary;
+﻿using CodingTrackerLibrary;
 using Spectre.Console;
 
 namespace CodingTracker;
@@ -30,6 +29,9 @@ public static class HandleMenuOptions
                 break;
             case CrudMenuOptions.Reports:
                 HandleReports(connectionString);
+                break;
+            case CrudMenuOptions.Goals:
+                HandleGoals(connectionString);
                 break;
             default:
                 break;
@@ -153,6 +155,7 @@ public static class HandleMenuOptions
                         CodingSessionOrganizer.ShowCodingSessions(connectionString, option, optionOrder);
                         break;
                     default:
+                        Console.WriteLine($"{option} option not supported.");
                         break;
                 }
             }
@@ -163,23 +166,71 @@ public static class HandleMenuOptions
     {
         ShowRecordsMenu menu = new ShowRecordsMenu();
         RecordsMenuOptions option = DisplayMenu.ShowMenu<RecordsMenuOptions>(menu);
-
+        Report report = new Report();;
         switch (option)
         {
             case RecordsMenuOptions.Quit:
                 break;
             case RecordsMenuOptions.All:
+                report = ReportController.GetReportAll(connectionString);
+                if(report != null) OutputRenderer.ShowPanel<Report>(report, title: "All Report");
+                else AnsiConsole.WriteLine("No report available.");
                 break;
             case RecordsMenuOptions.Day:
+                report = ReportController.GetReportLastDay(connectionString);
+                if (report != null)OutputRenderer.ShowPanel<Report>(report, title: "Daily Report");
+                else AnsiConsole.WriteLine("No report available.");
                 break;
             case RecordsMenuOptions.Week:
-                Report report = ReportController.GetReportLastWeek(connectionString);
-                OutputRenderer.ShowPanel<Report>(report, title: "Week Report");
+                report = ReportController.GetReportLastWeek(connectionString);
+                if (report != null) OutputRenderer.ShowPanel<Report>(report, title: "Weekly Report");
+                else AnsiConsole.WriteLine("No report available.");
                 break;
             case RecordsMenuOptions.Year:
+                report = ReportController.GetReportLastYear(connectionString);
+                if(report != null) OutputRenderer.ShowPanel<Report>(report, title: "Yearly Report");
+                else AnsiConsole.WriteLine("No report available.");
+                break;
+            default:
+                Console.WriteLine($"{option} option not supported.");
+                break;
+        }
+    }
+
+    private static void HandleGoals(string connectionString)
+    {
+        GoalsMenu goalsMenu = new GoalsMenu();
+        GoalsMenuOptions option = DisplayMenu.ShowMenu<GoalsMenuOptions>(goalsMenu);
+
+        switch (option)
+        {
+            case GoalsMenuOptions.Quit:
+                break;
+            case GoalsMenuOptions.Create:
+                HandleCreateGoal(connectionString);
                 break;
             default:
                 break;
+        }
+    }
+
+    private static void HandleCreateGoal(string connectionString)
+    {
+        try
+        {
+            Console.Clear();
+            var rule = new Rule("[blue]Inserting[/]");
+            AnsiConsole.Write(rule);
+            // TODO: Add validators for the menus
+            DateTime userStartTime = Convert.ToDateTime(DisplayMenu.ShowMenu<string>(new StartTimeMenu()));
+            DateTime userEndTime = Convert.ToDateTime(DisplayMenu.ShowMenu<string>(new EndTimeMenu(userStartTime)));
+            // TODO: Name and Hours menu
+            CodingGoalController.InsertCodingGoal(new CodingGoal { Name = "test", StartTime = userStartTime, EndTime = userEndTime, Hours = 40 }, connectionString);
+            Console.WriteLine("Record inserted successfully.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
         }
     }
 }

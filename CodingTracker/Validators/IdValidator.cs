@@ -1,4 +1,4 @@
-﻿using CodingTrackerLibrary.Controllers;
+﻿using CodingTrackerLibrary;
 using Spectre.Console;
 
 namespace CodingTracker;

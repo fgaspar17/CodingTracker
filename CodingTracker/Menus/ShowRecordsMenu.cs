@@ -6,13 +6,13 @@ public enum RecordsMenuOptions
 {
     [Title("Quit")]
     Quit,
-    [Title("Show all records")]
+    [Title("All")]
     All,
-    [Title("Show records per day")]
+    [Title("Daily")]
     Day,
-    [Title("Show records per week")]
+    [Title("Weekly")]
     Week,
-    [Title("Show records per year")]
+    [Title("Yearly")]
     Year,
 }
 public class ShowRecordsMenu : IMenu<RecordsMenuOptions>

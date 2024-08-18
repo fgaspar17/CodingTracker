@@ -1,5 +1,4 @@
-﻿using CodingTrackerLibrary.Controllers;
-using CodingTrackerLibrary;
+﻿using CodingTrackerLibrary;
 using System.Globalization;
 
 namespace CodingTracker;

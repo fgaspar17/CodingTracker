@@ -2,7 +2,7 @@
 using Microsoft.Data.Sqlite;
 using System.Data;
 
-namespace CodingTrackerLibrary.Controllers;
+namespace CodingTrackerLibrary;
 
 public static class CodingSessionController
 {

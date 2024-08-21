@@ -57,7 +57,8 @@ public static class OutputRenderer
 
         foreach (PropertyInfo property in properties)
         {
-            sb.AppendLine($"{property.Name}: [bold]{property.GetValue(value)}[/]");
+            var propertyValue = property.PropertyType == typeof(TimeSpan) ? ((TimeSpan)property.GetValue(value)).ToString("hh':'mm':'ss") : property.GetValue(value);
+            sb.AppendLine($"{property.Name}: [bold]{propertyValue}[/]");
         }
 
         var panel = new Panel(new Markup(sb.ToString()))

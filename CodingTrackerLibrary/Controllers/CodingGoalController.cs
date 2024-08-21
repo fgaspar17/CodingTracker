@@ -38,7 +38,7 @@ public static class CodingGoalController
             {
                 connection.Open();
 
-                goal = connection.QueryFirstOrDefault<CodingGoal>("SELECT Id, Name, StartTime, EndTime, Hours FROM CodingSessions WHERE Id = @Id", new { Id = id });
+                goal = connection.QueryFirstOrDefault<CodingGoal>("SELECT Id, Name, StartTime, EndTime, Hours FROM CodingGoals WHERE Id = @Id", new { Id = id });
 
                 connection.Close();
             }
@@ -56,7 +56,7 @@ public static class CodingGoalController
         string sql = $@"INSERT INTO CodingGoals (Name, StartTime, EndTime, Hours) 
                                         VALUES (@Name, @StartTime, @EndTime, @Hours);";
 
-        return ExecuteCommand(sql, goal, connStr);
+        return SQLExecutionService.ExecuteCommand<CodingGoal>(sql, goal, connStr);
     }
 
     public static bool UpdateCodingGoal(CodingGoal goal, string connStr)
@@ -68,7 +68,7 @@ public static class CodingGoalController
                                 Hours = @Hours
                                 WHERE Id = @Id;";
 
-        return ExecuteCommand(sql, goal, connStr);
+        return SQLExecutionService.ExecuteCommand<CodingGoal>(sql, goal, connStr);
     }
 
     public static bool DeleteCodingGoal(CodingGoal goal, string connStr)
@@ -76,29 +76,6 @@ public static class CodingGoalController
         string sql = $@"DELETE FROM CodingGoals
                                 WHERE Id = @Id;";
 
-        return ExecuteCommand(sql, goal, connStr);
-    }
-
-    private static bool ExecuteCommand(string sql, CodingGoal goal, string connStr)
-    {
-        try
-        {
-            using (IDbConnection connection = new SqliteConnection(connStr))
-            {
-                connection.Open();
-
-                connection.Execute(sql, goal);
-
-                connection.Close();
-            }
-
-            return true;
-        }
-        catch (Exception ex)
-        {
-
-            Console.WriteLine($"Error ocurred: {ex.Message}");
-            return false;
-        }
+        return SQLExecutionService.ExecuteCommand<CodingGoal>(sql, goal, connStr);
     }
 }

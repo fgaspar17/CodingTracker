@@ -56,7 +56,7 @@ public static class CodingSessionController
         string sql = $@"INSERT INTO CodingSessions (StartTime, EndTime) 
                                         VALUES (@StartTime, @EndTime);";
 
-        return ExecuteCommand(sql, session, connStr);
+        return SQLExecutionService.ExecuteCommand(sql, session, connStr);
     }
 
     public static bool UpdateCodingSession(CodingSession session, string connStr)
@@ -66,7 +66,7 @@ public static class CodingSessionController
                                 EndTime = @EndTime
                                 WHERE Id = @Id;";
 
-        return ExecuteCommand(sql, session, connStr);
+        return SQLExecutionService.ExecuteCommand(sql, session, connStr);
     }
 
     public static bool DeleteCodingSession(CodingSession session, string connStr)
@@ -74,29 +74,6 @@ public static class CodingSessionController
         string sql = $@"DELETE FROM CodingSessions
                                 WHERE Id = @Id;";
 
-        return ExecuteCommand(sql, session, connStr);
-    }
-
-    private static bool ExecuteCommand(string sql, CodingSession session, string connStr)
-    {
-        try
-        {
-            using (IDbConnection connection = new SqliteConnection(connStr))
-            {
-                connection.Open();
-
-                connection.Execute(sql, session);
-
-                connection.Close();
-            }
-
-            return true;
-        }
-        catch (Exception ex)
-        {
-
-            Console.WriteLine($"Error ocurred: {ex.Message}");
-            return false;
-        }
+        return SQLExecutionService.ExecuteCommand(sql, session, connStr);
     }
 }

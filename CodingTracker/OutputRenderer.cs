@@ -1,6 +1,4 @@
-﻿using CodingTrackerLibrary;
-using Spectre.Console;
-using System.Globalization;
+﻿using Spectre.Console;
 using System.Reflection;
 using System.Text;
 

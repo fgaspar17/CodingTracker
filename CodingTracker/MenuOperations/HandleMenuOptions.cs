@@ -166,7 +166,7 @@ public static class HandleMenuOptions
     {
         ShowRecordsMenu menu = new ShowRecordsMenu();
         RecordsMenuOptions option = DisplayMenu.ShowMenu<RecordsMenuOptions>(menu);
-        Report report = new Report();;
+        Report? report = new Report();;
         switch (option)
         {
             case RecordsMenuOptions.Quit:

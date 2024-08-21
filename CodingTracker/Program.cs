@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
-using CodingTrackerLibrary;
+﻿using CodingTrackerLibrary;
 using CodingTracker;
 
 SetupDatabase setupDatabase = new SetupDatabase(Settings.GetConnectionString());
 setupDatabase.InitializeDatabase();
-//setupDatabase.SeedData();
+
+#if DEBUG
+setupDatabase.SeedData();
+#endif
 
 Application app = new Application();
 app.Run(Settings.GetConnectionString());

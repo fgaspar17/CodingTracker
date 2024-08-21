@@ -4,7 +4,7 @@ using Dapper;
 
 namespace CodingTrackerLibrary;
 
-public static class SQLExecutionService
+public static class SqlExecutionService
 {
     public static bool ExecuteCommand<T>(string sql, T model, string connStr)
     {

@@ -56,7 +56,7 @@ public static class CodingGoalController
         string sql = $@"INSERT INTO CodingGoals (Name, StartTime, EndTime, Hours) 
                                         VALUES (@Name, @StartTime, @EndTime, @Hours);";
 
-        return SQLExecutionService.ExecuteCommand<CodingGoal>(sql, goal, connStr);
+        return SqlExecutionService.ExecuteCommand<CodingGoal>(sql, goal, connStr);
     }
 
     public static bool UpdateCodingGoal(CodingGoal goal, string connStr)
@@ -68,7 +68,7 @@ public static class CodingGoalController
                                 Hours = @Hours
                                 WHERE Id = @Id;";
 
-        return SQLExecutionService.ExecuteCommand<CodingGoal>(sql, goal, connStr);
+        return SqlExecutionService.ExecuteCommand<CodingGoal>(sql, goal, connStr);
     }
 
     public static bool DeleteCodingGoal(CodingGoal goal, string connStr)
@@ -76,6 +76,6 @@ public static class CodingGoalController
         string sql = $@"DELETE FROM CodingGoals
                                 WHERE Id = @Id;";
 
-        return SQLExecutionService.ExecuteCommand<CodingGoal>(sql, goal, connStr);
+        return SqlExecutionService.ExecuteCommand<CodingGoal>(sql, goal, connStr);
     }
 }

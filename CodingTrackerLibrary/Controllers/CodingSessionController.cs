@@ -56,7 +56,7 @@ public static class CodingSessionController
         string sql = $@"INSERT INTO CodingSessions (StartTime, EndTime) 
                                         VALUES (@StartTime, @EndTime);";
 
-        return SQLExecutionService.ExecuteCommand(sql, session, connStr);
+        return SqlExecutionService.ExecuteCommand(sql, session, connStr);
     }
 
     public static bool UpdateCodingSession(CodingSession session, string connStr)
@@ -66,7 +66,7 @@ public static class CodingSessionController
                                 EndTime = @EndTime
                                 WHERE Id = @Id;";
 
-        return SQLExecutionService.ExecuteCommand(sql, session, connStr);
+        return SqlExecutionService.ExecuteCommand(sql, session, connStr);
     }
 
     public static bool DeleteCodingSession(CodingSession session, string connStr)
@@ -74,6 +74,6 @@ public static class CodingSessionController
         string sql = $@"DELETE FROM CodingSessions
                                 WHERE Id = @Id;";
 
-        return SQLExecutionService.ExecuteCommand(sql, session, connStr);
+        return SqlExecutionService.ExecuteCommand(sql, session, connStr);
     }
 }
